@@ -24,6 +24,11 @@ public class ConvertUtf8tocp1252 {
 	// private static final String ROOT = "d:/Klee/@GitHub";
 
 	public static void main(String[] args) throws Exception {
+		if (!(args.length == 1)) {
+			throw new IllegalArgumentException(
+					"Usage : java Utf8AccentsCorrecter \"<<files RootPath>>\" ");
+		}
+		// ---------------------------------------------------------------------
 		final String root = args[0];
 		ConvertUtf8tocp1252 convertUtf8tocp1252 = new ConvertUtf8tocp1252(root);
 		File dirIn = new File(root);

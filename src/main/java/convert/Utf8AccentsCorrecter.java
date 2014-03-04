@@ -28,6 +28,11 @@ import java.util.TreeMap;
 public final class Utf8AccentsCorrecter {
 
 	public static void main(String[] args) throws Exception {
+		if (!(args.length == 2)) {
+			throw new IllegalArgumentException(
+					"Usage : java Utf8AccentsCorrecter \"<<files RootPath>>\" \"<<dico.properties path>>\"");
+		}
+		// ---------------------------------------------------------------------
 		final String root = args[0];
 		final String dicoBundle = args[1]; //"convert.AccentsDico"
 		Utf8AccentsCorrecter utf8AccentsCorrecter = new Utf8AccentsCorrecter(
