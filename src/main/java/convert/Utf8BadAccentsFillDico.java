@@ -19,8 +19,7 @@ import java.util.regex.Pattern;
  */
 public final class Utf8BadAccentsFillDico {
 	private static final String BAD_CHAR = "�";
-	private static final Pattern BAD_CHAR_PATTERN = Pattern
-			.compile("(?<=\\W)((?:\\w*" + BAD_CHAR + "\\w*)+)\\W");
+	private static final Pattern BAD_CHAR_PATTERN = Pattern.compile("(?<=\\W)((?:\\w*" + BAD_CHAR + "\\w*)+)\\W");
 
 	// private static final Map<String, Integer> DICO = new HashMap<String,
 	// Integer>();
@@ -28,8 +27,7 @@ public final class Utf8BadAccentsFillDico {
 
 	public static void main(String[] args) throws Exception {
 		if (!(args.length == 1)) {
-			throw new IllegalArgumentException(
-					"Usage : java Utf8BadAccentsFillDico \"<<files RootPath>>\" ");
+			throw new IllegalArgumentException("Usage : java Utf8BadAccentsFillDico \"<<files RootPath>>\" ");
 		}
 		// ---------------------------------------------------------------------
 		final String root = args[0];

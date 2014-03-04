@@ -11,9 +11,7 @@ import java.util.ResourceBundle;
 import java.util.ResourceBundle.Control;
 
 class UTF8Control extends Control {
-	public ResourceBundle newBundle(String baseName, Locale locale,
-			String format, ClassLoader loader, boolean reload)
-			throws IllegalAccessException, InstantiationException, IOException {
+	public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
 		// The below is a copy of the default implementation.
 		String bundleName = toBundleName(baseName, locale);
 		String resourceName = toResourceName(bundleName, "properties");
@@ -35,8 +33,7 @@ class UTF8Control extends Control {
 			try {
 				// Only this line is changed to make it to read properties files
 				// as UTF-8.
-				bundle = new PropertyResourceBundle(new InputStreamReader(
-						stream, "UTF-8"));
+				bundle = new PropertyResourceBundle(new InputStreamReader(stream, "UTF-8"));
 			} finally {
 				stream.close();
 			}

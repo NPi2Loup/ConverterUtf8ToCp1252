@@ -29,14 +29,12 @@ public final class Utf8AccentsCorrecter {
 
 	public static void main(String[] args) throws Exception {
 		if (!(args.length == 2)) {
-			throw new IllegalArgumentException(
-					"Usage : java Utf8AccentsCorrecter \"<<files RootPath>>\" \"<<dico.properties path>>\"");
+			throw new IllegalArgumentException("Usage : java Utf8AccentsCorrecter \"<<files RootPath>>\" \"<<dico.properties path>>\"");
 		}
 		// ---------------------------------------------------------------------
 		final String root = args[0];
 		final String dicoBundle = args[1]; //"convert.AccentsDico"
-		Utf8AccentsCorrecter utf8AccentsCorrecter = new Utf8AccentsCorrecter(
-				root, dicoBundle);
+		Utf8AccentsCorrecter utf8AccentsCorrecter = new Utf8AccentsCorrecter(root, dicoBundle);
 		File dirIn = new File(root);
 		utf8AccentsCorrecter.convertDir(dirIn);
 	}
@@ -49,17 +47,15 @@ public final class Utf8AccentsCorrecter {
 		dico = new TreeMap<String, String>(new Comparator<String>() {
 			@Override
 			public int compare(String o1, String o2) {
-				int compare = Integer.valueOf(o2.length()).compareTo(
-						Integer.valueOf(o1.length()));
+				int compare = Integer.valueOf(o2.length()).compareTo(Integer.valueOf(o1.length()));
 				if (compare == 0) {
 					compare = o1.compareTo(o2);
 				}
 				return compare;
 			}
 		});
-		final ResourceBundle rb = ResourceBundle.getBundle(dicoBundle,
-				new UTF8Control());//Charge le fichier properties en UTF8
-		
+		final ResourceBundle rb = ResourceBundle.getBundle(dicoBundle, new UTF8Control());//Charge le fichier properties en UTF8
+
 		for (Enumeration<String> e = rb.getKeys(); e.hasMoreElements();) {
 			String key = e.nextElement();
 			dico.put(key, rb.getString(key));
@@ -67,19 +63,15 @@ public final class Utf8AccentsCorrecter {
 	}
 
 	private void convertDir(File dirIn) throws IOException {
-		if ("abak".equals(dirIn.getName()) || "ubak".equals(dirIn.getName())
-				|| ".git".equals(dirIn.getName())
-				|| dirIn.getName().endsWith(".zip")
-				|| dirIn.getName().endsWith(".bak")
-				|| dirIn.getName().endsWith(".jar"))
+		if ("abak".equals(dirIn.getName()) || "ubak".equals(dirIn.getName()) || ".git".equals(dirIn.getName()) || dirIn.getName().endsWith(".zip") || dirIn.getName().endsWith(".bak") || dirIn.getName().endsWith(".jar"))
 			return;
 
 		for (File file : dirIn.listFiles()) {
 			if (file.isDirectory()) {
 				convertDir(file);
 			} else {
-				Encoding encoding = Encoding.isUtf8(file);
-				if (encoding.isUtf8 && !encoding.isAscii) {
+				Encoding encoding = Encoding.isEncoded(file, "utf8");
+				if (encoding.isEncoded && !encoding.isAscii) {
 					convertFile(file);
 				}
 			}
@@ -87,16 +79,13 @@ public final class Utf8AccentsCorrecter {
 	}
 
 	private void convertFile(File fileIn) throws IOException {
-		String saveInPath = fileIn.getAbsolutePath()
-				.replaceAll("\\" + File.separator, "/")
-				.replace(root, root + "/abak");
+		String saveInPath = fileIn.getAbsolutePath().replaceAll("\\" + File.separator, "/").replace(root, root + "/abak");
 		File saveIn = new File(saveInPath);
 		saveIn.getParentFile().mkdirs();
 		if (fileIn.renameTo(saveIn)) {
 			try (InputStream is = new FileInputStream(saveIn)) {
 				try (Reader reader = new InputStreamReader(is, "utf8")) {
-					try (Writer writer = new OutputStreamWriter(
-							new FileOutputStream(fileIn), "utf8")) {
+					try (Writer writer = new OutputStreamWriter(new FileOutputStream(fileIn), "utf8")) {
 						copy(reader, writer);
 					}
 				}
@@ -106,8 +95,7 @@ public final class Utf8AccentsCorrecter {
 		}
 	}
 
-	private void copy(final Reader in, final Writer out)
-			throws IOException {
+	private void copy(final Reader in, final Writer out) throws IOException {
 		final int bufferSize = 10 * 1024;
 		final char[] bytes = new char[bufferSize];
 		int read = in.read(bytes);
@@ -122,8 +110,7 @@ public final class Utf8AccentsCorrecter {
 		for (Map.Entry<String, String> entry : dico.entrySet()) {
 			if (buffer.contains(entry.getKey())) {
 				// System.out.println("replace "+entry.getKey());
-				buffer = buffer.replaceAll("(\\W)" + entry.getKey() + "(\\W)",
-						"$1" + entry.getValue() + "$2");
+				buffer = buffer.replaceAll("(\\W)" + entry.getKey() + "(\\W)", "$1" + entry.getValue() + "$2");
 			}
 		}
 		return buffer.toCharArray();
