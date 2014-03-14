@@ -1,62 +1,61 @@
-ConverterUtf8ToCp1252
-=====================
+#ConverterUtf8ToCp1252
 
-Some UTF8 Tools.
+A set of UTF8 Tools.
+For correcting bad encoded sources files (and other usage :))
 
-ConvertUtf8toCp1252
--------------------
 
+###ConvertUtf8toCp1252
 Mass convertion of all files under the rootpath from one charset to another.
 By default convert from utf8 to Cp1252. 
  * Modified files are backuped in a directory "ubak".
  * Hard coded excludes : 
- ** directories : abak, ubak, .git
- ** files : *.zip, *.bak, *.jar
+   + directories : abak, ubak, .git
+   + files : *.zip, *.bak, *.jar
 
 Usage : 
- '''java convert.ConvertUtf8toCp1252 "<<files RootPath>>" <optional:fromCharset> <optional:toCharset>'''
+`java convert.ConvertUtf8toCp1252 "<<files RootPath>>" optional:fromCharset> <optional:toCharset>`
+ 
  
 
-Utf8BadAccentsFillDico
-----------------------
+###Utf8BadAccentsFillDico
 Extract a dictionnary of all word with bad encoding accents (show as ï¿½ or ? in utf8).
 The properties files could be corrected with a spelling tools.
 Mass replace from dictionnary could be done with 'Utf8AccentsCorrecter'
 
 Usage : 
- '''java Utf8BadAccentsFillDico "<<files RootPath>>"  > myDico.properties'''
+`java Utf8BadAccentsFillDico "<<files RootPath>>"  > myDico.properties`
 
 
-Utf8AccentsCorrecter
---------------------
+
+###Utf8AccentsCorrecter
 Read a .properties of all words to replace and replace them in all files under the rootpath.
  * Modified files are backuped in a directory "abak".
  * Hard coded excludes : 
- * - directories : abak, ubak, .git
- * - files : *.zip, *.bak, *.jar
+   + directories : abak, ubak, .git
+   + files : *.zip, *.bak, *.jar
  
 Usage : 
- '''java Utf8AccentsCorrecter "<<files RootPath>>" "<<dico.properties path>>"'''
+`java Utf8AccentsCorrecter "<<files RootPath>>" "<<dico.properties path>>"`
 
 
-License
--------
-Copyright 2013 - Nicolas Piedeloup
+###License : AGPLv3
+     UTF8 Tools : ConverterUtf8ToCp1252, Utf8BadAccentsFillDico, Utf8AccentsCorrecter
+     Copyright (C) 2013 - Nicolas Piedeloup
+     
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
+     
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
+     
+     You should have received a copy of the GNU Affero General Public License
+     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-Version history
----------------
-
-v1.0
+###Version history
+####v1.0
 - first release
