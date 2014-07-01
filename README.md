@@ -23,7 +23,7 @@ The properties files could be corrected with a spelling tools.
 Mass replace from dictionnary could be done with 'Utf8AccentsCorrecter'
 
 Usage : 
-`java Utf8BadAccentsFillDico "<<files RootPath>>"  > myDico.properties`
+`java convert.Utf8BadAccentsFillDico "<<files RootPath>>"  > myDico.properties`
 
 
 
@@ -35,7 +35,7 @@ Read a .properties of all words to replace and replace them in all files under t
    + files : *.zip, *.bak, *.jar
  
 Usage : 
-`java Utf8AccentsCorrecter "<<files RootPath>>" "<<dico.properties path>>"`
+`java convert.Utf8AccentsCorrecter "<<files RootPath>>" "<<dico.properties path>>"`
 
 
 ###License : AGPLv3
