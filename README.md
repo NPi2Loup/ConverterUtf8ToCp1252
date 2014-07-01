@@ -35,7 +35,7 @@ Read a .properties of all words to replace and replace them in all files under t
    + files : *.zip, *.bak, *.jar
  
 Usage : 
-`java convert.Utf8AccentsCorrecter "<<files RootPath>>" "<<dico.properties path>>"`
+`java convert.Utf8AccentsCorrecter "<<files RootPath>>" "<<myDico (no extention) path>>"`
 
 
 ###License : AGPLv3
