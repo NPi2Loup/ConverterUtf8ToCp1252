@@ -15,29 +15,30 @@ class Encoding {
 		this.isAscii = isAscii;
 	}
 
-	public static Encoding isEncoded(final File in, String fromCharset) throws IOException {
+	public static Encoding isEncoded(final File in, final String fromCharset) throws IOException {
 		try (InputStream is = new FileInputStream(in)) {
-			boolean isUtf8 = true;
+			boolean isAlreadyEncoded = true;
 			boolean isAscii = true;
 			final int bufferSize = 10 * 1024;
 			final byte[] bytes = new byte[bufferSize];
 			int read = is.read(bytes);
 			while (read != -1) {
-				byte[] outputUtf8 = new String(bytes, fromCharset).getBytes(fromCharset);
-				byte[] outputAscii = new String(bytes, "ASCII").getBytes("ASCII");
+				final byte[] outputFromCharset = new String(bytes, fromCharset).getBytes(fromCharset);
+				final byte[] outputAscii = new String(bytes, "ASCII").getBytes("ASCII");
 				// System.out.println(in.getAbsolutePath() +
 				// " ASCII : "+Arrays.equals(bytes, outputAscii));
-				if (!Arrays.equals(bytes, outputUtf8)) {
-					isUtf8 = false;
+				if (!Arrays.equals(bytes, outputFromCharset)) {
+					System.out.println(in.getAbsolutePath() + " with " + fromCharset + " differ");
+					isAlreadyEncoded = false;
 					break;
 				}
-				isAscii = isAscii && Arrays.equals(outputUtf8, outputAscii);
+				isAscii = isAscii && Arrays.equals(outputFromCharset, outputAscii);
 				read = is.read(bytes);
 			}
 			//				if (isAscii) {
 			//					System.out.println(in.getAbsolutePath() + " ascii");
 			//				}
-			return new Encoding(isUtf8, isAscii);
+			return new Encoding(isAlreadyEncoded, isAscii);
 		}
 	}
 
