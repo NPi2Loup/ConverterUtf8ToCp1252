@@ -27,15 +27,15 @@ import java.util.TreeMap;
  */
 public final class Utf8AccentsCorrecter {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(final String[] args) throws Exception {
 		if (!(args.length == 2)) {
 			throw new IllegalArgumentException("Usage : java Utf8AccentsCorrecter \"<<files RootPath>>\" \"<<dico.properties path>>\"");
 		}
 		// ---------------------------------------------------------------------
 		final String root = args[0];
 		final String dicoBundle = args[1]; //"convert.AccentsDico"
-		Utf8AccentsCorrecter utf8AccentsCorrecter = new Utf8AccentsCorrecter(root, dicoBundle);
-		File dirIn = new File(root);
+		final Utf8AccentsCorrecter utf8AccentsCorrecter = new Utf8AccentsCorrecter(root, dicoBundle);
+		final File dirIn = new File(root);
 		utf8AccentsCorrecter.convertDir(dirIn);
 	}
 
@@ -44,9 +44,9 @@ public final class Utf8AccentsCorrecter {
 
 	Utf8AccentsCorrecter(final String root, final String dicoBundle) {
 		this.root = root;
-		dico = new TreeMap<String, String>(new Comparator<String>() {
+		dico = new TreeMap<>(new Comparator<String>() {
 			@Override
-			public int compare(String o1, String o2) {
+			public int compare(final String o1, final String o2) {
 				int compare = Integer.valueOf(o2.length()).compareTo(Integer.valueOf(o1.length()));
 				if (compare == 0) {
 					compare = o1.compareTo(o2);
@@ -54,23 +54,24 @@ public final class Utf8AccentsCorrecter {
 				return compare;
 			}
 		});
-		final ResourceBundle rb = ResourceBundle.getBundle(dicoBundle, new UTF8Control());//Charge le fichier properties en UTF8
+		final ResourceBundle rb = ResourceBundle.getBundle(dicoBundle, new ResourceBundleControl("UTF8"));//Charge le fichier properties en UTF8
 
-		for (Enumeration<String> e = rb.getKeys(); e.hasMoreElements();) {
-			String key = e.nextElement();
+		for (final Enumeration<String> e = rb.getKeys(); e.hasMoreElements();) {
+			final String key = e.nextElement();
 			dico.put(key, rb.getString(key));
 		}
 	}
 
-	private void convertDir(File dirIn) throws IOException {
-		if ("abak".equals(dirIn.getName()) || "ubak".equals(dirIn.getName()) || ".git".equals(dirIn.getName()) || dirIn.getName().endsWith(".zip") || dirIn.getName().endsWith(".bak") || dirIn.getName().endsWith(".jar"))
+	private void convertDir(final File dirIn) throws IOException {
+		if (FileUtil.isExclude(dirIn.getName())) {
 			return;
+		}
 
-		for (File file : dirIn.listFiles()) {
+		for (final File file : dirIn.listFiles()) {
 			if (file.isDirectory()) {
 				convertDir(file);
 			} else {
-				Encoding encoding = Encoding.isEncoded(file, "utf8");
+				final Encoding encoding = Encoding.isEncoded(file, "utf8");
 				if (encoding.isEncoded && !encoding.isAscii) {
 					convertFile(file);
 				}
@@ -78,9 +79,9 @@ public final class Utf8AccentsCorrecter {
 		}
 	}
 
-	private void convertFile(File fileIn) throws IOException {
-		String saveInPath = fileIn.getAbsolutePath().replaceAll("\\" + File.separator, "/").replace(root, root + "/abak");
-		File saveIn = new File(saveInPath);
+	private void convertFile(final File fileIn) throws IOException {
+		final String saveInPath = fileIn.getAbsolutePath().replaceAll("\\" + File.separator, "/").replace(root, root + "/abak");
+		final File saveIn = new File(saveInPath);
 		saveIn.getParentFile().mkdirs();
 		if (fileIn.renameTo(saveIn)) {
 			try (InputStream is = new FileInputStream(saveIn)) {
@@ -105,9 +106,9 @@ public final class Utf8AccentsCorrecter {
 		}
 	}
 
-	private char[] convert(char[] bytes) {
+	private char[] convert(final char[] bytes) {
 		String buffer = new String(bytes);
-		for (Map.Entry<String, String> entry : dico.entrySet()) {
+		for (final Map.Entry<String, String> entry : dico.entrySet()) {
 			if (buffer.contains(entry.getKey())) {
 				// System.out.println("replace "+entry.getKey());
 				buffer = buffer.replaceAll("(\\W)" + entry.getKey() + "(\\W)", "$1" + entry.getValue() + "$2");

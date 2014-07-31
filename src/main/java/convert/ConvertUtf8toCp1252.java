@@ -69,7 +69,7 @@ public class ConvertUtf8toCp1252 {
 	}
 
 	private void convertDir(final File dirIn) throws IOException {
-		if ("abak".equals(dirIn.getName()) || "ubak".equals(dirIn.getName()) || ".git".equals(dirIn.getName()) || dirIn.getName().endsWith(".zip") || dirIn.getName().endsWith(".bak") || dirIn.getName().endsWith(".jar")) {
+		if (FileUtil.isExclude(dirIn.getName())) {
 			return;
 		}
 		for (final File file : dirIn.listFiles()) {
@@ -82,6 +82,9 @@ public class ConvertUtf8toCp1252 {
 	}
 
 	private void convertFile(final File fileIn) throws IOException {
+		if (FileUtil.isExclude(fileIn.getName())) {
+			return;
+		}
 		final Encoding encoding = Encoding.isEncoded(fileIn, fromCharset);
 		if (encoding.isEncoded && !encoding.isAscii) {
 			if (!fileIn.getName().endsWith(".java")) {
@@ -110,7 +113,7 @@ public class ConvertUtf8toCp1252 {
 		}
 	}
 
-	public void copy(final Reader in, final Writer out) throws IOException {
+	void copy(final Reader in, final Writer out) throws IOException {
 		final int bufferSize = 10 * 1024;
 		final char[] bytes = new char[bufferSize];
 		int read = in.read(bytes);
